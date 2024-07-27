@@ -1,26 +1,36 @@
 import { useState } from "react";
 import { Button, ButtonGroup } from "semantic-ui-react";
+import ColumnDisplay from "./column-display";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMovies, fetchTvShows } from "./query";
 
-enum DisplayType {
+export enum DisplayType {
   Movies = "movies",
   TvShows = "tvshows",
 }
 
 const Home = () => {
+  const { data: moviesData, isLoading: moviesLoading } = useQuery({
+    queryKey: ["movies"],
+    queryFn: fetchMovies,
+  });
+  const { data: tvshowsData, isLoading: tvshowsLoading } = useQuery({
+    queryKey: ["tvshows"],
+    queryFn: fetchTvShows,
+  });
+
   const [displayType, setDisplayType] = useState<DisplayType>(
     DisplayType.Movies
   );
   return (
     <div
       style={{
-        marginTop: 60,
         height: "auto",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        maxWidth: "1024px",
+        margin: "60px auto",
+        textAlign:"center"
       }}
     >
-        {" "}
       <ButtonGroup>
         <Button
           color={displayType === DisplayType.Movies ? "blue" : undefined}
@@ -35,6 +45,21 @@ const Home = () => {
           TV Shows
         </Button>
       </ButtonGroup>
+      <div style={{ marginTop: 20 }}>
+        {moviesLoading || tvshowsLoading ? (
+          <p>Loading...</p>
+        ) : displayType === DisplayType.Movies ? (
+          <ColumnDisplay
+            data={moviesData.results}
+            displayType={DisplayType.Movies}
+          />
+        ) : (
+          <ColumnDisplay
+            data={tvshowsData.results}
+            displayType={DisplayType.TvShows}
+          />
+        )}
+      </div>
     </div>
   );
 };

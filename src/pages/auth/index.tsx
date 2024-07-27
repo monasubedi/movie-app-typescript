@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
-import React, { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { Form, Grid, Header, Segment, Button } from "semantic-ui-react";
 import { mutationLogin } from "./mutation";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
-  const { data, mutate, isPending, isSuccess } = useMutation({
+  const { data, mutate } = useMutation({
     mutationKey: ["login"],
     mutationFn: mutationLogin,
   });
