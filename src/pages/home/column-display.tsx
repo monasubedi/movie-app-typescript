@@ -73,6 +73,7 @@ const ColumnDisplay: React.FC<Props> = (props: Props) => {
                 }/${displayData.id}`}
               >
                 <Card
+                  style={{ height: 780 }}
                   fluid
                   image={`https://image.tmdb.org/t/p/original/${displayData.poster_path}`}
                   header={
