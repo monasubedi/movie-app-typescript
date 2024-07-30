@@ -9,13 +9,26 @@ const Navbar = () => {
     navigate(pathName);
   };
 
+  const isLoggedIn = localStorage.getItem("guest_session_id") === null;
+
+  const logout = () => {
+    localStorage.clear();
+    navigate("/auth");
+  };
+
   return (
     <Menu fixed="top" size="huge">
       <Menu.Item onClick={() => navigateTo("/")}>Home</Menu.Item>
       <MenuItem onClick={() => navigateTo("/rated")}>Rated</MenuItem>
-      <MenuMenu position="right">
-        <MenuItem onClick={() => navigateTo("/auth")}>Auth</MenuItem>
-      </MenuMenu>
+      {!isLoggedIn ? (
+        <MenuMenu position="right">
+          <MenuItem onClick={() => logout()}>Logout</MenuItem>
+        </MenuMenu>
+      ) : (
+        <MenuMenu position="right">
+          <MenuItem onClick={() => navigateTo("/auth")}>Auth</MenuItem>
+        </MenuMenu>
+      )}
     </Menu>
   );
 };
